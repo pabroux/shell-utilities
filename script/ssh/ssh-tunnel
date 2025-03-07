@@ -1,0 +1,24 @@
+#!/bin/bash
+
+## Color
+colorOff='\033[0m'
+colorBold='\033[1;37m'
+
+main() {
+	echo -e "${colorBold}Enter the remote server address:${colorOff}"
+	read addr
+	echo -e "${colorBold}Enter the user to login on the remote server:${colorOff}"
+	read user
+	echo -e "${colorBold}Enter which port on your local machine to forward to:${colorOff}"
+	read listen
+	echo -e "${colorBold}Enter which port on the remote server to listen to (default: $listen):${colorOff}"
+	read forward
+	if [[ -z "$forward" ]]; then
+		forward=$listen
+	fi
+	echo -e "\n${colorBold}Launching now:${colorOff}"
+	echo "→ ssh -NL $listen:localhost:$forward $user@$addr"
+	ssh -NL $listen:localhost:$forward $user@$addr
+}
+
+main

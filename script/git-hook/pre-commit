@@ -1,0 +1,8 @@
+#!/usr/bin/env nix
+#! nix shell nixpkgs#pre-commit --command bash
+
+ARGS=(hook-impl --config=.pre-commit-config.yaml --hook-type=pre-commit)
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ARGS+=(--hook-dir "$HERE" -- "$@")
+
+exec pre-commit "${ARGS[@]}"
