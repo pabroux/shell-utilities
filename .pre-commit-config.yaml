@@ -6,7 +6,7 @@ repos:
         description: This hook checks shell files with shfmt.
         entry: bash -c 'for arg in "$@"; do nix shell nixpkgs#shfmt --command shfmt -w $arg; done;' --
         language: system
-        types_or: [ash, bash, dash, ksh, sh, zsh]
+        types_or: [shell, executable]
       - id: gitleaks
         name: Gitleaks (secret scanner)
         description: This hook checks the existence of secrets.
