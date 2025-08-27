@@ -1,18 +1,23 @@
-name: Code security checker
+name: CI
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
-  secret-scanner:
+  QA:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
+      - name: Check format of shell files (shfmt)
+        run: nix shell nixpkgs#shfmt --command shfmt -d .
       - name: Scan secrets
         run: nix shell nixpkgs#gitleaks --command gitleaks git --no-banner --verbose
